@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./navbar-styles.css">
+    <link rel="stylesheet" href="./navmenu.css">
+</head>
+<body>
+  <nav>
+    <div class="navbar">
+        <div class="navleft">
+          <button class='roundbtn' onclick="navmenutoggle()"><img src="../../svg/hamburger.svg" alt="menu"></button>
+          <img width="40px" height="40px" src="../../images/keep.png" alt="keeplogo"/>
+          <h2 style="color:#5f6368;opacity:1;font-weight:400">Keep</h2>
+        </div>
+        <div class="navcentre">
+          <button class="searchiconbtn" onclick="focussearchInputbox()"><img src="../../svg/searchicon.svg" alt="find"></button> 
+          <input class='search-input' type="search" placeholder="Search" value="">
+        </div>
+        <div class="navright">
+          <button class='roundbtn' onclick="clickfunction()"><img src="../../svg/refreshicon.svg" alt="refresh"></button>
+            <button class='roundbtn' onclick="clickfunction()"><img src="../../svg/settings.svg" alt="settings"></button>
+        </div>
+    </div>
+    </nav>
+    <aside>
+      <div id="navmenu" class="nav">
+          <div class="icon">
+            <ul>
+              <li><a class="notes" id="0" href="Notes"><img src="../../svg/notesicon.svg" alt="notes"></a></li>
+              <li><a class="editlabels" id="1" href="Edit Labels"><img src="../../svg/editlabels.svg" alt="notes"></a></li>
+              <li><a class="archives" id="2" href="Archive"><img src="../../svg/archives.svg" alt="notes"></a></li>
+              <li><a class="trash" id="3" href="Trash"><img src="../../svg/trash.svg" alt="notes"></a></li>
+            </ul>
+          </div>
+          <div class="text">
+            <ul style="list-style-type: none;">
+              <li><a class="tnotes" id="4"  href="#">Notes</a></li>
+              <li><a class="teditlabels" id="5" href="#" >Edit Labels</a></li>
+              <li><a class="tarchives" id="6" href="#" >Archive</a></li>
+              <li><a class="ttrash" id="7" href="#" >Trash</a></li>
+            </ul>
+          </div>
+        </div>
+    </aside>
+    <script src="./navbar-script.js"></script>
+</body>
+</html>
