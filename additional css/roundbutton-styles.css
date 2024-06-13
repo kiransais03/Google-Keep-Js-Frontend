@@ -1,0 +1,16 @@
+.roundbtn {
+    padding: 0.7rem;
+    border-radius: 25px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background-color: white;
+}
+
+.roundbtn:hover {
+    background-color: #eff3f6;
+}
+
+.roundbtn:disabled {
+    opacity: 0.1;
+}
