@@ -15,7 +15,7 @@ async function getnotesanddisplay (notesdiv,usernotesarr) {
        let noteuidiv = document.createElement('div');
        console.log(notearrobj)
        noteuidiv.classList.add("noteui");
-       noteuidiv.innerHTML = `<div >
+       noteuidiv.innerHTML = `<div data-objid=${notearrobj.id}>
         <div class='notetitlerow'>
           <input class='note-input' style="font-weight:500;font-size:1.2rem,background-color:white" type="text" placeholder="Enter Title" value="${notearrobj.title}">
            <button class='roundbtn' onclick="onclickpin(this)" data-pinselected='${notearrobj.pinselected}'><img src="../../svg/pin.svg" alt="pin"></img></button>
@@ -78,17 +78,27 @@ async function editandsavenotesfunc (elem) {
   let ispinselected = JSON.parse(currnotediv.querySelector('.notetitlerow button').getAttribute('data-pinselected'));
   let isarchived = JSON.parse(currnotediv.querySelector('.archivebtn').getAttribute('data-isarchived'));
   let istrashed = JSON.parse(currnotediv.querySelector('.trashbtn').getAttribute('data-istrashed'))
-  console.log(inputtitle,textareavalue,labelnamesarr,inputcolor,ispinselected,isarchived,istrashed);
+  let objid = parseInt(currnotediv.getAttribute('data-objid'));
+  console.log(objid,inputtitle,textareavalue,labelnamesarr,inputcolor,ispinselected,isarchived,istrashed);
 
-  let editandsaveresponse =  await fetch("http://localhost:8080/notes/editlabel",{method:"PATCH","headers":
+  let editandsaveresponse =  await fetch("http://localhost:8080/notes/editandreplacenotes",{method:"PUT","headers":
     {'Content-Type':"application/json",
       'Token-Googlekeep':"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtpcmFuc2FpczAzIiwibmFtZSI6IktpcmFuIFNhaSIsImVtYWlsIjoia2lyYW5zYWlzMDNAZ21haWwuY29tIiwidXNlcklkIjoiNjY2NzI2MTVhZWFmNzgwNDgyZDAzNjE2IiwiaWF0IjoxNzE4MDM2MDI2fQ.SnZ5u3T9PzwowrpyW2AxaqzJ2Nmd2FkTC2dCQRx9NLs"
     },body:JSON.stringify({
         "email":"kiransais03@gmail.com",
-        "oldlabel":oldlabelname,
-        "editedlabel":editedlabelname
+        "noteobj" : {
+          "id": objid,
+          "title": inputtitle,
+          "text": textareavalue,
+          "pinselected": ispinselected,
+          "archived": isarchived,
+          "trashed": istrashed,
+          "notebgcolour": inputcolor,
+          "labels": labelnamesarr
+        }
     })});
-let labelsarrdata = await labelsresponse.json();
+let labelsarrdata = await editandsaveresponse.json();
+console.log("Replaced obj successfully",labelsarrdata)
 
   } catch (error) {
     console.log("Failed to edit notes",error)
