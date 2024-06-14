@@ -79,7 +79,8 @@ async function fetchandshowpinnednotes () {
             } 
     })
     let notesdiv = document.getElementsByClassName('notesdiv')[0];
-    await getnotesanddisplay(notesdiv,filteredusernotesarr);
+    let labelslistarr1 = notesdata.notesarr[0].labelslist
+    await getnotesanddisplay(notesdiv,filteredusernotesarr,labelslistarr1);
     console.log("hilton")
 }
 
@@ -99,7 +100,8 @@ async function fetchandshowothernotesdiv () {
             } 
     })
     let notesdiv = document.getElementsByClassName('notesdiv')[1];
-    await getnotesanddisplay(notesdiv,filteredusernotesarr);
+    let labelslistarr1 = notesdata.notesarr[0].labelslist
+    await getnotesanddisplay(notesdiv,filteredusernotesarr,labelslistarr1);
     console.log("hilton")
 }
 

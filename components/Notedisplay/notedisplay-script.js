@@ -5,25 +5,25 @@ console.log("Hello")
 function onchangedata () {
     console.log("Onchange called")
 }
-
         //   <Menulist selectedlabels={selectedlabels} setSelectedlabels={setSelectedlabels}/>
 
-async function getnotesanddisplay (notesdiv,usernotesarr) {
-    
-    console.log(usernotesarr,"data");
+      
+async function getnotesanddisplay (notesdiv,usernotesarr,listlabels) {
+    console.log(usernotesarr,"data",listlabels);
      usernotesarr.map((notearrobj,index,arr)=>{
        let noteuidiv = document.createElement('div');
        console.log(notearrobj)
        noteuidiv.classList.add("noteui");
-       noteuidiv.innerHTML = `<div data-objid=${notearrobj.id}>
+       noteuidiv.innerHTML = `<div class="notecontainer" data-objid=${notearrobj.id} style="background-color:${notearrobj.notebgcolour}">
         <div class='notetitlerow'>
           <input class='note-input' style="font-weight:500;font-size:1.2rem,background-color:white" type="text" placeholder="Enter Title" value="${notearrobj.title}">
-           <button class='roundbtn' onclick="onclickpin(this)" data-pinselected='${notearrobj.pinselected}'><img src="../../svg/pin.svg" alt="pin"></img></button>
+          ${notearrobj.pinselected?`<button class='roundbtn' onclick="onclickpin(this)" data-pinselected='${notearrobj.pinselected}'><img src="../../svg/pinselected.svg" alt="pin"></img></button>`:`<button class='roundbtn' onclick="onclickpin(this)" data-pinselected='${notearrobj.pinselected}'><img src="../../svg/pin.svg" alt="pin"></img></button>`}
+           
           </div>
         <div style="display:flex;justify-content:flex-start;padding-left:10px;column-gap:5px">
            ${ notearrobj.labels.map((label,index)=>{
              return (`<div class="labelbtnsdiv">
-              <button class="roundbtn" style="background-color:white;font-size:12px;border:1px solid black;padding:3px">${label} x</button>
+              <button class="roundbtn" onclick="removethisbutton(this)" style="background-color:white;font-size:12px;border:1px solid black;padding:3px">${label} x</button>
              </div>`)
           })}
         </div>
@@ -31,10 +31,31 @@ async function getnotesanddisplay (notesdiv,usernotesarr) {
        <div class='notebtnrow' style="${true?'display:flex':'display:none'}">
         <div style="display:flex;align-items:center">
           <img width="20px" style="background-color:white" src="../../svg/backgroundcoloricon.svg" alt='bgcoloricon'/> ᐅᐅ
-          <input type="color" style="border-radius:5px;cursor:pointer"}} value="#000000">
+          <input type="color" style="border-radius:5px;cursor:pointer"}} value=${notearrobj.notebgcolour} onchange="notebgcolorchange(this)">
          <button class='roundbtn archivebtn' data-isarchived='${notearrobj.archived}' onclick="onchangedata()"><img width="20px" src="../../svg/archives.svg" alt="archivesicon"></button>
           <button class='roundbtn trashbtn' data-istrashed='${notearrobj.trashed}' onclick="onchangedata()"><img width="20px" src="../../svg/deleteforevericon.svg" alt="deleteforevericon"></button>
          <button class='roundbtn' onclick="onchangedata()"><img width="20px" src="../../svg/restoreicon.svg" alt="restoreicon"></button>
+       
+         
+           <div id="container">
+          <div id="menu-wrap">
+            <input type="checkbox" class="toggler" />
+            <div class="dots">
+              <div></div>
+            </div>
+            <div class="menu">
+              <div>
+                <ul>
+                ${listlabels.map((label,index)=>{
+                  return  (`<li><a href="#" onclick="selectlabelclick(this)" class="link">${label}</a></li>`)
+                })}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+       
+
         </div>
         <div>
         <button class='roundbtn' styles="font-weight:600;background-color:white" onclick="editandsavenotesfunc(this)">Save</button>
@@ -52,18 +73,43 @@ function onclickpin (elem) {
    let pinboolean = JSON.parse(elem.getAttribute('data-pinselected'));
    if(pinboolean) {
      elem.setAttribute('data-pinselected',"false");
-     elem.innerHTML = '<img src="../../svg/pinselected.svg" alt="pin"></img>'
+     elem.innerHTML = '<img src="../../svg/pin.svg" alt="pin"></img>'
    }
    else {
     elem.setAttribute('data-pinselected',"true");
-    elem.innerHTML = '<img src="../../svg/pin.svg" alt="pin"></img>'
+    elem.innerHTML = '<img src="../../svg/pinselected.svg" alt="pin"></img>'
    }
+}
+
+function notebgcolorchange(elem) {
+  let currnotediv = elem.closest('.notecontainer')
+  console.log(currnotediv,"uidiv");
+  currnotediv.style.backgroundColor=elem.value;
+}
+
+function removethisbutton (elem) {
+  elem.remove();
+}
+
+function selectlabelclick (elem) {
+  // let currnotediv = elem.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
+  let currnotediv = elem.closest('.notecontainer')
+  let labelbtnsdiv = currnotediv.querySelector('.labelbtnsdiv');
+  let button = document.createElement('button');
+      button.className = 'roundbtn';
+      button.style.backgroundColor = 'white';
+      button.style.fontSize = '12px';
+      button.style.border = '1px solid black';
+      button.style.padding = '3px';
+      button.onclick = function() { removethisbutton(this); };
+      button.innerHTML = elem.innerText+" x";
+    labelbtnsdiv.append(button);
 }
 
 async function editandsavenotesfunc (elem) {
   try {
   // 3 parents for save
-  let currnotediv = elem.parentElement.parentElement.parentElement;
+  let currnotediv = elem.closest('.notecontainer')
   console.log(currnotediv,"uidiv");
   let inputtitle = currnotediv.querySelector('.notetitlerow input').value;
   let textareavalue = currnotediv.querySelector('textarea').value;
@@ -79,7 +125,7 @@ async function editandsavenotesfunc (elem) {
   let isarchived = JSON.parse(currnotediv.querySelector('.archivebtn').getAttribute('data-isarchived'));
   let istrashed = JSON.parse(currnotediv.querySelector('.trashbtn').getAttribute('data-istrashed'))
   let objid = parseInt(currnotediv.getAttribute('data-objid'));
-  console.log(objid,inputtitle,textareavalue,labelnamesarr,inputcolor,ispinselected,isarchived,istrashed);
+  console.log("Allvalues",objid,"title",inputtitle,"text",textareavalue,labelnamesarr,inputcolor,"pin",ispinselected,"archive",isarchived,"trash",istrashed);
 
   let editandsaveresponse =  await fetch("http://localhost:8080/notes/editandreplacenotes",{method:"PUT","headers":
     {'Content-Type':"application/json",
@@ -98,9 +144,13 @@ async function editandsavenotesfunc (elem) {
         }
     })});
 let labelsarrdata = await editandsaveresponse.json();
-console.log("Replaced obj successfully",labelsarrdata)
+console.log("Replaced obj successfully",labelsarrdata);
+location.reload();
 
   } catch (error) {
     console.log("Failed to edit notes",error)
   }
 }
+
+
+
