@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Labels - Google Keep</title>
+    <link rel="icon" type="image" href="../../images/keep.png">
+    <!-- importing navbar component styles -->
+    <link rel="stylesheet" href="../../components/Navbar/navbar-styles.css">
+    <link rel="stylesheet" href="../../additional css/roundbutton-styles.css">
+    <link rel="stylesheet" href="./editlabelspage-styles.css">
+</head>
+<body>
+    <div class="navbarhomepagediv">
+
+    </div>
+    <div class="lablescontainer">
+      <h3 style="text-align: center;">Edit Labels</h3>
+      <div class="labelsdisplay" style="display: flex;flex-direction: column;align-items: center;">
+         <div class="addlabel">
+            <button class='roundbtn' onclick=><img width="20px" src="../../svg/closeicon.svg" alt="cancel"></button>
+            <input class='note-input' style="border: 1px solid black;" type="text" placeholder="Create New Label" value="" onchange="clickchangedata()">
+            <button class='roundbtn' onclick="clickchangedata()" style="font-weight:400"><img src="../../svg/tickicon.svg" alt="tick"></button>
+        </div>
+      </div>
+    </div>
+    </div>
+    <!-- To load and execute one <script> file after another check the below script file, without this method, it will create not found div errors -->
+      <!-- <script src="./editpage-clickfunctions.js"></script> -->
+      <script src="./editlabelspage-script.js"></script>
+</body>
+</html>

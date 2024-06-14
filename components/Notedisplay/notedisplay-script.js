@@ -1,6 +1,6 @@
 console.log("Hello")
-let othernotesdiv = document.getElementsByClassName('othernotes')[0];
-getnotesanddisplay();
+// let notesdiv = document.getElementsByClassName('notesdiv')[0];
+// getnotesanddisplay();
 
 function onchangedata () {
     console.log("Onchange called")
@@ -8,24 +8,16 @@ function onchangedata () {
 
         //   <Menulist selectedlabels={selectedlabels} setSelectedlabels={setSelectedlabels}/>
 
-async function getnotesanddisplay () {
-    let notesresponse =  await fetch("http://localhost:8080/notes/getnotes",{method:"GET","headers":
-        {'Content-Type':"application/json",
-          'Token-Googlekeep':"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtpcmFuc2FpczAzIiwibmFtZSI6IktpcmFuIFNhaSIsImVtYWlsIjoia2lyYW5zYWlzMDNAZ21haWwuY29tIiwidXNlcklkIjoiNjY2NzI2MTVhZWFmNzgwNDgyZDAzNjE2IiwiaWF0IjoxNzE4MDM2MDI2fQ.SnZ5u3T9PzwowrpyW2AxaqzJ2Nmd2FkTC2dCQRx9NLs"
-        }});
-    let notesdata = await notesresponse.json();
-    console.log(notesdata,"data");
-    //   noteuidiv.innerHTML = `
-    //   <div>${notearrobj.title}</div`
-     notesdata.notesarr[0].usernotes.map((notearrobj,index,arr)=>{
+async function getnotesanddisplay (notesdiv,usernotesarr) {
+    
+    console.log(usernotesarr,"data");
+     usernotesarr.map((notearrobj,index,arr)=>{
        let noteuidiv = document.createElement('div');
        console.log(notearrobj)
        noteuidiv.classList.add("noteui");
        noteuidiv.innerHTML = `<div >
         <div class='notetitlerow'>
           <input class='note-input' style="font-weight:500;font-size:1.2rem,background-color:white" type="text" placeholder="" value="${notearrobj.title}" onchange="onchangedata()">
-       
-
            <button class='roundbtn' onclick="onchangedata()"><img src="../../svg/pin.svg" alt="pin"></button>
           </div>
         <div style="display:flex;justify-content:flex-start;padding-left:10px;column-gap:5px">
@@ -42,8 +34,6 @@ async function getnotesanddisplay () {
           <input type="color" style="border-radius:5px;cursor:pointer"}} value="#000000" onchange="onchangedata()">
          <button class='roundbtn' onclick="onchangedata()"><img width="20px" src="../../svg/archives.svg" alt="archivesicon"></button>
           <button class='roundbtn' onclick="onchangedata()"><img width="20px" src="../../svg/deleteforevericon.svg" alt="deleteforevericon"></button>
-         
-
          <button class='roundbtn' onclick="onchangedata()"><img width="20px" src="../../svg/restoreicon.svg" alt="restoreicon"></button>
         </div>
         <div>
@@ -51,6 +41,7 @@ async function getnotesanddisplay () {
         </div>
       </div>`
       
-      othernotesdiv.append(noteuidiv)
+      notesdiv.append(noteuidiv)
      })   
 }
+
