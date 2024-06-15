@@ -8,7 +8,7 @@
 }
 
 .roundbtn:hover {
-    background-color: #eff3f6;
+    background-color: #eff3f6 !important;
 }
 
 .roundbtn:disabled {
