@@ -19,12 +19,12 @@ async function getnotesanddisplay (notesdiv,usernotesarr,listlabels) {
           ${notearrobj.pinselected?`<button class='roundbtn' onclick="onclickpin(this)" style="background-color:${notearrobj.notebgcolour}" data-pinselected='${notearrobj.pinselected}'><img src="../../svg/pinselected.svg" alt="pin"></img></button>`:`<button class='roundbtn' onclick="onclickpin(this)" data-pinselected='${notearrobj.pinselected}'><img src="../../svg/pin.svg" alt="pin"></img></button>`}
            
           </div>
-        <div style="display:flex;justify-content:flex-start;padding-left:10px;column-gap:5px">
+        <div class="labelbtnsline" style="display:flex;justify-content:flex-start;padding-left:10px;column-gap:5px">
            ${ notearrobj.labels.map((label,index)=>{
              return (`<div class="labelbtnsdiv">
               <button class="roundbtn" onclick="removethisbutton(this)" style="background-color:${notearrobj.notebgcolour};font-size:12px;border:1px solid black;padding:3px">${label} x</button>
              </div>`)
-          })}
+          }).join('')}
         </div>
            <textarea class='note-input' cols="34"  style="height:${(parseInt(34/34)*16)+40}px;font-weight:500;font-size:1rem;background-color:${notearrobj.notebgcolour}" placeholder="Take a note..." onChange="onchangedata()">${notearrobj.text}</textarea>
        <div class='notebtnrow' style="${true?'display:flex':'display:none'}">
@@ -56,7 +56,7 @@ async function getnotesanddisplay (notesdiv,usernotesarr,listlabels) {
 
         </div>
         <div>
-        ${notearrobj.trashed?``:`<button class='roundbtn' style="background-color:${notearrobj.notebgcolour}" onclick="editandsavenotesfunc(this)">Save</button>`}
+        ${notearrobj.trashed?``:`<button class='roundbtn savebtn' style="background-color:${notearrobj.notebgcolour}" onclick="editandsavenotesfunc(this)">Save</button>`}
         </div>
       </div>`
       
@@ -116,6 +116,7 @@ function selectlabelclick (elem) {
     labelbtnsdiv.append(button);
 }
 
+
 async function editandsavenotesfunc (elem) {
   try {
   // 3 parents for save
@@ -153,8 +154,8 @@ async function editandsavenotesfunc (elem) {
           "labels": labelnamesarr
         }
     })});
-let labelsarrdata = await editandsaveresponse.json();
-console.log("Replaced obj successfully",labelsarrdata);
+let editsaveresponsedata = await editandsaveresponse.json();
+console.log("Replaced obj successfully",editsaveresponsedata);
 location.reload();
 
   } catch (error) {
@@ -255,5 +256,52 @@ async function onclickdelteforever(elem) {
 
   } catch (error) {
     console.log("Failed to delete the note",error)
+  }
+}
+
+
+async function onclickaddnewnotes(elem) {
+    try {
+      let currnotediv = elem.closest('.notecontainer')
+      console.log(currnotediv,"uidiv");
+      let inputtitle = currnotediv.querySelector('.notetitlerow input').value;
+      let textareavalue = currnotediv.querySelector('textarea').value;
+      let labelbtnsnodelist = currnotediv.querySelectorAll('.labelbtnsdiv button');
+      let labelbtnselemarr = Array.from(labelbtnsnodelist);
+      let labelnamesarr = labelbtnselemarr.map((elem,index)=>{
+        let innertext= elem.innerText;
+        let labelname = innertext.slice(0,innertext.length-2);
+        return labelname;
+      })
+      let inputcolor = currnotediv.querySelector('input[type="color"]').value;
+      let ispinselected = JSON.parse(currnotediv.querySelector('.notetitlerow button').getAttribute('data-pinselected'));
+      let isarchived = false;
+      let istrashed = false;
+      let objid = parseInt(currnotediv.getAttribute('data-objid'));
+      console.log("Allvalues",objid,"title",inputtitle,"text",textareavalue,labelnamesarr,inputcolor,"pin",ispinselected,"archive",isarchived,"trash",istrashed);
+    
+      let addnewresponse =  await fetch("http://localhost:8080/notes/addnewnotes",{method:"POST","headers":
+        {'Content-Type':"application/json",
+          'Token-Googlekeep':"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtpcmFuc2FpczAzIiwibmFtZSI6IktpcmFuIFNhaSIsImVtYWlsIjoia2lyYW5zYWlzMDNAZ21haWwuY29tIiwidXNlcklkIjoiNjY2NzI2MTVhZWFmNzgwNDgyZDAzNjE2IiwiaWF0IjoxNzE4MDM2MDI2fQ.SnZ5u3T9PzwowrpyW2AxaqzJ2Nmd2FkTC2dCQRx9NLs"
+        },body:JSON.stringify({
+            "email":"kiransais03@gmail.com",
+            "noteobj" : {
+              "id": objid,
+              "title": inputtitle,
+              "text": textareavalue,
+              "pinselected": ispinselected,
+              "archived": isarchived,
+              "trashed": istrashed,
+              "notebgcolour": inputcolor,
+              "labels": labelnamesarr
+            }
+        })});
+    let addnewresponsedata = await addnewresponse.json();
+    console.log("New note added successfully",addnewresponse);
+    location.reload();
+    
+      }
+ catch (error) {
+    console.log("Failed to add new note",error)
   }
 }

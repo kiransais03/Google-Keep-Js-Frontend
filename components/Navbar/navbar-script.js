@@ -36,3 +36,49 @@ function removebghighlighter(e) {
   function navmenutoggle () {
      document.getElementById("navmenu").classList.add('togglemenu');
   }
+
+  function reloadpage () {
+   location.reload();
+  }
+
+  //Search functionality
+
+  let notedivcollectionarr = '';
+  let pagename = ''
+
+  function searchfunc (elem) {
+     if(notedivcollectionarr=='') {
+      notedivcollectionarr = Array.from(document.getElementsByClassName('noteui'));
+      pagename = document.querySelector('.notescontainer h3').innerText;
+      if(pagename==="Pinned Notes")
+         {
+            pagename="Notes"
+         }
+      searchandfilternotes(elem,notedivcollectionarr);
+     }
+     else {
+      searchandfilternotes(elem,notedivcollectionarr);
+     }
+  }
+
+  console.log("statted")
+
+  function searchandfilternotes (elem,notedivcollectionarr) {
+   let searchtext = elem.value;
+   let notescontainerdiv = document.getElementsByClassName('notescontainer')[0];
+   let noteuidivs = Array.from(document.getElementsByClassName('noteui'))
+   console.log(notedivcollectionarr,"uiu")
+   notescontainerdiv.innerHTML = `<h2 style="text-align:center">${pagename} Search</h2>`;
+   notescontainerdiv.style="row-gap:10px;display:flex;flex-direction:column"
+   for(let i=0;i<notedivcollectionarr.length;i++)
+      {
+         let notetitle = notedivcollectionarr[i].querySelector('.note-input').value;
+         let notetext = notedivcollectionarr[i].querySelector('textarea').value;
+         console.log("title",notetitle,notetext)
+         if(notetitle.toLowerCase().search(searchtext.toLowerCase())!==-1 || notetext.toLowerCase().search(searchtext.toLowerCase())!==-1) {
+            notescontainerdiv.append(notedivcollectionarr[i]) 
+         }
+      }
+  }
+
+

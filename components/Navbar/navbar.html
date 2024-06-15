@@ -16,11 +16,11 @@
         </div>
         <div class="navcentre">
           <button class="searchiconbtn" onclick="focussearchInputbox()"><img src="../../svg/searchicon.svg" alt="find"></button> 
-          <input class='search-input' type="search" placeholder="Search" value="">
+          <input class='search-input' onchange="searchfunc(this)" onkeyup="searchfunc(this)" type="search" placeholder="Search" value="">
         </div>
         <div class="navright">
-          <button class='roundbtn' onclick="clickfunction()"><img src="../../svg/refreshicon.svg" alt="refresh"></button>
-            <button class='roundbtn' onclick="clickfunction()"><img src="../../svg/settings.svg" alt="settings"></button>
+          <button class='roundbtn' onclick="reloadpage()"><img src="../../svg/refreshicon.svg" alt="refresh"></button>
+            <button class='roundbtn'><img src="../../svg/settings.svg" alt="settings"></button>
         </div>
     </div>
     </nav>
