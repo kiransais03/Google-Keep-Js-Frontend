@@ -5,6 +5,8 @@ console.log("Hello")
 function onchangedata () {
     console.log("Onchange called")
 }
+
+// ${true?'display:flex':'display:none'}
       
       
 async function getnotesanddisplay (notesdiv,usernotesarr,listlabels) {
@@ -13,6 +15,8 @@ async function getnotesanddisplay (notesdiv,usernotesarr,listlabels) {
        let noteuidiv = document.createElement('div');
        console.log(notearrobj)
        noteuidiv.classList.add("noteui");
+       noteuidiv.addEventListener('mouseenter',shownotebtnrow)
+       noteuidiv.addEventListener('mouseleave',hidenotebtnrow)
        noteuidiv.innerHTML = `<div class="notecontainer" style="background-color:${notearrobj.notebgcolour}" data-objid=${notearrobj.id}>
         <div class='notetitlerow'>
           <input class='note-input' style="font-weight:500;font-size:1.2rem;background-color:${notearrobj.notebgcolour}" type="text" placeholder="Enter Title" value="${notearrobj.title}">
@@ -27,7 +31,7 @@ async function getnotesanddisplay (notesdiv,usernotesarr,listlabels) {
           }).join('')}
         </div>
            <textarea class='note-input' cols="34"  style="height:${(parseInt(34/34)*16)+40}px;font-weight:500;font-size:1rem;background-color:${notearrobj.notebgcolour}" placeholder="Take a note..." onChange="onchangedata()">${notearrobj.text}</textarea>
-       <div class='notebtnrow' style="${true?'display:flex':'display:none'}">
+       <div class='notebtnrow' style="display:none">
          <div style="display:flex;align-items:center">
          ${notearrobj.trashed?``:`<img width="20px" class="colorimage" style="background-color:${notearrobj.notebgcolour}" src="../../svg/backgroundcoloricon.svg" alt='bgcoloricon'/> ᐅᐅ`}
          ${notearrobj.trashed?``:`<input type="color" style="background-color:${notearrobj.notebgcolour};cursor: pointer;border-radius:5px"  value=${notearrobj.notebgcolour} onchange="notebgcolorchange(this)">`}
@@ -304,4 +308,17 @@ async function onclickaddnewnotes(elem) {
  catch (error) {
     console.log("Failed to add new note",error)
   }
+}
+
+
+function shownotebtnrow (e) {
+  let elem = e.target;
+  let notebtnrow = elem.querySelector('.notebtnrow');
+  notebtnrow.style.display="flex";
+}
+
+function hidenotebtnrow (e) {
+  let elem = e.target;
+  let notebtnrow = elem.querySelector('.notebtnrow');
+  notebtnrow.style.display="none";
 }

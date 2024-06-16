@@ -72,6 +72,18 @@ async function loadscriptfilesonebyone () {
    await shownavbarcomponent();
    await showArchivesNotesdivDisplaycomponent();
    await fetchandshowarchivesnotes();
+   addinfotags();
    }
    
 loadscriptfilesonebyone()
+
+function addinfotags () {
+    let noteuidivarr = document.querySelectorAll('.archivesnotesdiv .noteui');
+    if(noteuidivarr.length==0)
+      {
+          console.log("Hello no trashed files");
+          let archivesnotesdiv = document.getElementsByClassName('archivesnotesdiv')[0];
+          archivesnotesdiv.innerHTML = '<span style="color:teal;font-style: italic">No Archived Notes Available</span>';
+          archivesnotesdiv.style="display: flex;justify-content: center"
+      }
+  }

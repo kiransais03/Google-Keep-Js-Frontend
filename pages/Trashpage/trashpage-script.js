@@ -72,6 +72,18 @@ async function loadscriptfilesonebyone () {
    await shownavbarcomponent();
    await showTrashsNotesdivDisplaycomponent();
    await fetchandshowtrashnotes();
+   addinfotags();
    }
    
 loadscriptfilesonebyone()
+
+function addinfotags () {
+    let noteuidivarr = document.querySelectorAll('.trashnotesdiv .noteui');
+    if(noteuidivarr.length==0)
+      {
+          console.log("Hello no trashed files");
+          let trashnotesdiv = document.getElementsByClassName('trashnotesdiv')[0];
+          trashnotesdiv.innerHTML = '<span style="color:teal;font-style: italic">No Trashed Notes Available</span>';
+          trashnotesdiv.style="display: flex;justify-content: center"
+      }
+  }

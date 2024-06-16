@@ -157,7 +157,8 @@ async function loadscriptfilesonebyone () {
    await fetchandshowaddnewnotesform(notesdata)
    await fetchandshowpinnednotes(notesdata);
    await fetchandshowothernotesdiv(notesdata);
-   await removeUnwantedelements();
+    removeUnwantedelements();
+    addinfotags();
  }
    
 loadscriptfilesonebyone()
@@ -166,7 +167,7 @@ loadscriptfilesonebyone()
 //Actions to be done from this page after loading the complete page
 
 //Removing unwanted elements from New Add notes and changing some tags,functions
-async function removeUnwantedelements () {
+function removeUnwantedelements () {
    let labelbtnsline = document.querySelector('.createnotesdiv .labelbtnsline');
    labelbtnsline.innerHTML = '<div class="labelbtnsdiv"></div>';
    let archivebtn = document.querySelector('.createnotesdiv .archivebtn').remove();
@@ -174,4 +175,24 @@ async function removeUnwantedelements () {
    let savebtn = document.querySelector('.createnotesdiv .savebtn');
    savebtn.addEventListener('click',(e)=>{onclickaddnewnotes(e.target)});
    savebtn.innerText = 'Add New Note'
+}
+
+
+function addinfotags () {
+  let pinnoteuiarr = document.querySelectorAll('.pinnednotesdiv .noteui');
+  let othernoteuiarr = document.querySelectorAll('.othernotesdiv .noteui')
+  if(pinnoteuiarr.length==0)
+    {
+        console.log("Hello no pins");
+        let pinnednotesdiv = document.getElementsByClassName('pinnednotesdiv')[0];
+        pinnednotesdiv.innerHTML = '<span style="color:teal;font-style: italic">No Pinned Notes Available</span>';
+        pinnednotesdiv.style="display: flex;justify-content: center"
+    }
+    if(othernoteuiarr.length==0)
+        {
+            console.log("Hello no others")
+            let othernotesdiv = document.getElementsByClassName('othernotesdiv')[0];
+            othernotesdiv.innerHTML = '<span style="color:teal;font-style: italic">No Other Notes Available</span>';
+            othernotesdiv.style="display: flex;justify-content: center"
+        }
 }
