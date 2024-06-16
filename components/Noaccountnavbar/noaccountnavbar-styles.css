@@ -2,5 +2,22 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     margin: 5px;
+    position: relative;
+    left: 75px;
+}
+
+@media  screen and (max-width:730px) {
+    .noaccountnavbarmain {
+        display: flex !important;
+        flex-direction: column;
+        align-items: center !important;
+        row-gap: 15px !important;
+    }
+
+    .navcentrehome {
+        position: static;
+    }
+    
 }

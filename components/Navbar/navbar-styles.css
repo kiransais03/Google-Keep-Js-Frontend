@@ -5,13 +5,19 @@
     margin: 0 1rem;
     column-gap:0.3rem;
     z-index: 20;
-    border-bottom: 1px solid rgba(225, 220, 220, 0.746);
+    border-bottom: 2px solid rgba(225, 220, 220, 0.746);
 }
 
 .navleft {
     display: flex;
     align-items: center;
     column-gap: 0.5rem;
+}
+
+.navright {
+  display: flex;
+    align-items: center;
+    column-gap: 1.5rem
 }
 
 .navcentre {
@@ -73,11 +79,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500&display=swap');
 
 .nav {
-  position: fixed;
-  left: -2em;
-  z-index: 1000;
+  /* position: fixed;
+  left: -2em; */
+  /* z-index: 1000; */
+   position: relative;
+  left: -2em; 
+   z-index: 1000; 
   transform-style: preserve-3d;
-  perspective: 1000px;
+  /* perspective: 1000px; */
 }
 
 .icon {
@@ -105,13 +114,14 @@
   background-color: #eff3f6;
  }
 
-.nav:hover .text{
+ .nav:hover .text,.togglemenu .text{
   transform: rotateY(0deg);
 }
 
-.nav:hover .text,.togglemenu{
+.nav:hover .text,.togglemenu .text{
   transform: rotateY(0deg);
 }
+
 
 .text {
   position: absolute; 
@@ -155,8 +165,17 @@
 }
 
 
+
 @media screen and (max-width: 450px) {
   h1 {
     font-size: 7.5vw;
+  }
+}
+
+@media screen and (max-width:800px) {
+  .text ul {
+    background-color: aliceblue;
+      border-radius: 5px;
+      margin-left: -25px;
   }
 }

@@ -10,25 +10,27 @@ function onchangedata () {
       
       
 async function getnotesanddisplay (notesdiv,usernotesarr,listlabels) {
-    console.log(usernotesarr,"data",listlabels);
+    // console.log(usernotesarr,"data",listlabels);
      usernotesarr.map((notearrobj,index,arr)=>{
        let noteuidiv = document.createElement('div');
-       console.log(notearrobj)
+      //  console.log(notearrobj)
        noteuidiv.classList.add("noteui");
        noteuidiv.addEventListener('mouseenter',shownotebtnrow)
        noteuidiv.addEventListener('mouseleave',hidenotebtnrow)
        noteuidiv.innerHTML = `<div class="notecontainer" style="background-color:${notearrobj.notebgcolour}" data-objid=${notearrobj.id}>
         <div class='notetitlerow'>
           <input class='note-input' style="font-weight:500;font-size:1.2rem;background-color:${notearrobj.notebgcolour}" type="text" placeholder="Enter Title" value="${notearrobj.title}">
-          ${notearrobj.pinselected?`<button class='roundbtn' onclick="onclickpin(this)" style="background-color:${notearrobj.notebgcolour}" data-pinselected='${notearrobj.pinselected}'><img src="../../svg/pinselected.svg" alt="pin"></img></button>`:`<button class='roundbtn' onclick="onclickpin(this)" data-pinselected='${notearrobj.pinselected}'><img src="../../svg/pin.svg" alt="pin"></img></button>`}
+          ${notearrobj.pinselected?`<button class='roundbtn' onclick="onclickpin(this)" style="background-color:${notearrobj.notebgcolour}" data-pinselected='${notearrobj.pinselected}'><img src="../../svg/pinselected.svg" alt="pin"></img></button>`:`<button class='roundbtn' style="background-color:${notearrobj.notebgcolour}" onclick="onclickpin(this)" data-pinselected='${notearrobj.pinselected}'><img src="../../svg/pin.svg" alt="pin"></img></button>`}
            
           </div>
         <div class="labelbtnsline" style="display:flex;justify-content:flex-start;padding-left:10px;column-gap:5px">
-           ${ notearrobj.labels.map((label,index)=>{
-             return (`<div class="labelbtnsdiv">
+          <div class="labelbtnsdiv">
+        ${notearrobj.labels.map((label,index)=>{
+             return (`
               <button class="roundbtn" onclick="removethisbutton(this)" style="background-color:${notearrobj.notebgcolour};font-size:12px;border:1px solid black;padding:3px">${label} x</button>
-             </div>`)
+             `)
           }).join('')}
+          </div>
         </div>
            <textarea class='note-input' cols="34"  style="height:${(parseInt(34/34)*16)+40}px;font-weight:500;font-size:1rem;background-color:${notearrobj.notebgcolour}" placeholder="Take a note..." onChange="onchangedata()">${notearrobj.text}</textarea>
        <div class='notebtnrow' style="display:none">
@@ -116,8 +118,13 @@ function selectlabelclick (elem) {
       button.style.border = '1px solid black';
       button.style.padding = '3px';
       button.onclick = function() { removethisbutton(this); };
+      let scrollPosition = window.scrollY;
+      console.log(scrollPosition,"pos")
       button.innerHTML = elem.innerText+" x";
-    labelbtnsdiv.append(button);
+      labelbtnsdiv.append(button);
+      requestAnimationFrame(() => {
+        window.scrollTo(0, scrollPosition);
+    });
 }
 
 
@@ -141,10 +148,11 @@ async function editandsavenotesfunc (elem) {
   let istrashed = JSON.parse(currnotediv.querySelector('.trashbtn').getAttribute('data-istrashed'))
   let objid = parseInt(currnotediv.getAttribute('data-objid'));
   console.log("Allvalues",objid,"title",inputtitle,"text",textareavalue,labelnamesarr,inputcolor,"pin",ispinselected,"archive",isarchived,"trash",istrashed);
-
-  let editandsaveresponse =  await fetch("http://localhost:8080/notes/editandreplacenotes",{method:"PUT","headers":
+  
+  let accesstoken = localStorage.getItem('accesstoken');
+  let editandsaveresponse =  await fetch("https://google-keep-backend-node-h-c-n.onrender.com/notes/editandreplacenotes",{method:"PUT","headers":
     {'Content-Type':"application/json",
-      'Token-Googlekeep':"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtpcmFuc2FpczAzIiwibmFtZSI6IktpcmFuIFNhaSIsImVtYWlsIjoia2lyYW5zYWlzMDNAZ21haWwuY29tIiwidXNlcklkIjoiNjY2NzI2MTVhZWFmNzgwNDgyZDAzNjE2IiwiaWF0IjoxNzE4MDM2MDI2fQ.SnZ5u3T9PzwowrpyW2AxaqzJ2Nmd2FkTC2dCQRx9NLs"
+      'Token-Googlekeep':`Bearer ${accesstoken}`
     },body:JSON.stringify({
         "email":"kiransais03@gmail.com",
         "noteobj" : {
@@ -169,14 +177,16 @@ location.reload();
 
 
 async function onclickarchive(elem) {
+  try {
   let archiveboolean = JSON.parse(elem.getAttribute('data-isarchived'));
   let objid = parseInt(elem.getAttribute('data-objid'));
   if(archiveboolean) {
     elem.setAttribute('data-isarchived',"false");
     elem.innerHTML = '<img src="../../svg/archivedark.svg" alt="archive"></img>'
-    let archiveresponse =  await fetch("http://localhost:8080/notes/editnotes",{method:"PATCH","headers":
+    let accesstoken = localStorage.getItem('accesstoken');
+    let archiveresponse =  await fetch("https://google-keep-backend-node-h-c-n.onrender.com/notes/editnotes",{method:"PATCH","headers":
         {'Content-Type':"application/json",
-          'Token-Googlekeep':"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtpcmFuc2FpczAzIiwibmFtZSI6IktpcmFuIFNhaSIsImVtYWlsIjoia2lyYW5zYWlzMDNAZ21haWwuY29tIiwidXNlcklkIjoiNjY2NzI2MTVhZWFmNzgwNDgyZDAzNjE2IiwiaWF0IjoxNzE4MDM2MDI2fQ.SnZ5u3T9PzwowrpyW2AxaqzJ2Nmd2FkTC2dCQRx9NLs"
+          'Token-Googlekeep':`Bearer ${accesstoken}`
         },body:JSON.stringify({
             "email":"kiransais03@gmail.com",
             "id":objid,
@@ -190,9 +200,10 @@ async function onclickarchive(elem) {
   else {
    elem.setAttribute('data-isarchived',"true");
    elem.innerHTML = '<img src="../../svg/unarchive.svg" alt="unarchive"></img>';
-   let archiveresponse =  await fetch("http://localhost:8080/notes/editnotes",{method:"PATCH","headers":
+   let accesstoken = localStorage.getItem('accesstoken');
+   let archiveresponse =  await fetch("https://google-keep-backend-node-h-c-n.onrender.com/notes/editnotes",{method:"PATCH","headers":
     {'Content-Type':"application/json",
-      'Token-Googlekeep':"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtpcmFuc2FpczAzIiwibmFtZSI6IktpcmFuIFNhaSIsImVtYWlsIjoia2lyYW5zYWlzMDNAZ21haWwuY29tIiwidXNlcklkIjoiNjY2NzI2MTVhZWFmNzgwNDgyZDAzNjE2IiwiaWF0IjoxNzE4MDM2MDI2fQ.SnZ5u3T9PzwowrpyW2AxaqzJ2Nmd2FkTC2dCQRx9NLs"
+      'Token-Googlekeep':`Bearer ${accesstoken}`
     },body:JSON.stringify({
         "email":"kiransais03@gmail.com",
         "id":objid,
@@ -204,16 +215,22 @@ console.log("Archive is set to true",archivedresult);
 location.reload();
   }
 }
+catch(err) {
+  console.log("Failed to edit notes",err);
+}
+}
 
 async  function onclicktrashed(elem) {
+  try {
   let deleteboolean = JSON.parse(elem.getAttribute('data-istrashed'));
   let objid = parseInt(elem.getAttribute('data-objid'));
   if(deleteboolean) {
     elem.setAttribute('data-istrashed',"false");
     elem.innerHTML = '<img src="../../svg/deleteicon.svg" alt="deleteicon"></img>';
-    let trashedresponse =  await fetch("http://localhost:8080/notes/editnotes",{method:"PATCH","headers":
+    let accesstoken = localStorage.getItem('accesstoken');
+    let trashedresponse =  await fetch("https://google-keep-backend-node-h-c-n.onrender.com/notes/editnotes",{method:"PATCH","headers":
       {'Content-Type':"application/json",
-        'Token-Googlekeep':"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtpcmFuc2FpczAzIiwibmFtZSI6IktpcmFuIFNhaSIsImVtYWlsIjoia2lyYW5zYWlzMDNAZ21haWwuY29tIiwidXNlcklkIjoiNjY2NzI2MTVhZWFmNzgwNDgyZDAzNjE2IiwiaWF0IjoxNzE4MDM2MDI2fQ.SnZ5u3T9PzwowrpyW2AxaqzJ2Nmd2FkTC2dCQRx9NLs"
+        'Token-Googlekeep':`Bearer ${accesstoken}`
       },body:JSON.stringify({
           "email":"kiransais03@gmail.com",
           "id":objid,
@@ -227,9 +244,10 @@ async  function onclicktrashed(elem) {
   else {
    elem.setAttribute('data-istrashed',"true");
    elem.innerHTML = '<img src="../../svg/trashrestore.svg" alt="trashrestore"></img>';
-   let trashedresponse =  await fetch("http://localhost:8080/notes/editnotes",{method:"PATCH","headers":
+   let accesstoken = localStorage.getItem('accesstoken');
+   let trashedresponse =  await fetch("https://google-keep-backend-node-h-c-n.onrender.com/notes/editnotes",{method:"PATCH","headers":
     {'Content-Type':"application/json",
-      'Token-Googlekeep':"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtpcmFuc2FpczAzIiwibmFtZSI6IktpcmFuIFNhaSIsImVtYWlsIjoia2lyYW5zYWlzMDNAZ21haWwuY29tIiwidXNlcklkIjoiNjY2NzI2MTVhZWFmNzgwNDgyZDAzNjE2IiwiaWF0IjoxNzE4MDM2MDI2fQ.SnZ5u3T9PzwowrpyW2AxaqzJ2Nmd2FkTC2dCQRx9NLs"
+      'Token-Googlekeep':`Bearer ${accesstoken}`
     },body:JSON.stringify({
         "email":"kiransais03@gmail.com",
         "id":objid,
@@ -241,15 +259,20 @@ console.log("Trashed is set to true",trashedresult);
 location.reload();
   }
 }
+catch(err) {
+  console.log("Failed to edit notes",err);
+}
+}
 
 
 async function onclickdelteforever(elem) {
   try {
     console.log(elem)
     let objid = parseInt(elem.getAttribute('data-objid'));
-    let deleteresponse =  await fetch("http://localhost:8080/notes/deletenotes",{method:"DELETE","headers":
+    let accesstoken = localStorage.getItem('accesstoken');
+    let deleteresponse =  await fetch("https://google-keep-backend-node-h-c-n.onrender.com/notes/deletenotes",{method:"DELETE","headers":
         {'Content-Type':"application/json",
-          'Token-Googlekeep':"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtpcmFuc2FpczAzIiwibmFtZSI6IktpcmFuIFNhaSIsImVtYWlsIjoia2lyYW5zYWlzMDNAZ21haWwuY29tIiwidXNlcklkIjoiNjY2NzI2MTVhZWFmNzgwNDgyZDAzNjE2IiwiaWF0IjoxNzE4MDM2MDI2fQ.SnZ5u3T9PzwowrpyW2AxaqzJ2Nmd2FkTC2dCQRx9NLs"
+          'Token-Googlekeep':`Bearer ${accesstoken}`
         },body:JSON.stringify({
             "email":"kiransais03@gmail.com",
             "deletingobjid":objid
@@ -284,9 +307,10 @@ async function onclickaddnewnotes(elem) {
       let objid = parseInt(currnotediv.getAttribute('data-objid'));
       console.log("Allvalues",objid,"title",inputtitle,"text",textareavalue,labelnamesarr,inputcolor,"pin",ispinselected,"archive",isarchived,"trash",istrashed);
     
-      let addnewresponse =  await fetch("http://localhost:8080/notes/addnewnotes",{method:"POST","headers":
+      let accesstoken = localStorage.getItem('accesstoken');
+      let addnewresponse =  await fetch("https://google-keep-backend-node-h-c-n.onrender.com/notes/addnewnotes",{method:"POST","headers":
         {'Content-Type':"application/json",
-          'Token-Googlekeep':"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtpcmFuc2FpczAzIiwibmFtZSI6IktpcmFuIFNhaSIsImVtYWlsIjoia2lyYW5zYWlzMDNAZ21haWwuY29tIiwidXNlcklkIjoiNjY2NzI2MTVhZWFmNzgwNDgyZDAzNjE2IiwiaWF0IjoxNzE4MDM2MDI2fQ.SnZ5u3T9PzwowrpyW2AxaqzJ2Nmd2FkTC2dCQRx9NLs"
+          'Token-Googlekeep':`Bearer ${accesstoken}`
         },body:JSON.stringify({
             "email":"kiransais03@gmail.com",
             "noteobj" : {

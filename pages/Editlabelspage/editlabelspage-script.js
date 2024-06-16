@@ -36,9 +36,11 @@ async function shownavbarcomponent () {
 }
 
 async function getlabelslist () {
-    let labelsresponse =  await fetch("http://localhost:8080/notes/getlabelslist",{method:"GET","headers":
+  try {
+    let accesstoken = localStorage.getItem('accesstoken');
+    let labelsresponse =  await fetch("https://google-keep-backend-node-h-c-n.onrender.com/notes/getlabelslist",{method:"GET","headers":
         {'Content-Type':"application/json",
-          'Token-Googlekeep':"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtpcmFuc2FpczAzIiwibmFtZSI6IktpcmFuIFNhaSIsImVtYWlsIjoia2lyYW5zYWlzMDNAZ21haWwuY29tIiwidXNlcklkIjoiNjY2NzI2MTVhZWFmNzgwNDgyZDAzNjE2IiwiaWF0IjoxNzE4MDM2MDI2fQ.SnZ5u3T9PzwowrpyW2AxaqzJ2Nmd2FkTC2dCQRx9NLs"
+          'Token-Googlekeep':`Bearer ${accesstoken}`
         }});
     let labelsarrdata = await labelsresponse.json();
     console.log(labelsarrdata.notesarr[0].labelslist,"response data")
@@ -54,6 +56,10 @@ async function getlabelslist () {
             labelsdisplaydiv.append(labeldiv);
             clickchangedata()
     })
+  }
+  catch(err) {
+    console.log("Error while getting labellist",err)
+  }
 }  
 
 async function loadscriptfilesonebyone () {
@@ -75,23 +81,25 @@ async function createlabelfunc () {
     try {
         let newlabelinputelem = document.getElementById('newlabelinput');
         let labelname = newlabelinputelem.value;
-        let labelsresponse =  await fetch("http://localhost:8080/notes/addlabel",{method:"POST","headers":
+        let accesstoken = localStorage.getItem('accesstoken');
+        let labelsresponse =  await fetch("https://google-keep-backend-node-h-c-n.onrender.com/notes/addlabel",{method:"POST","headers":
             {'Content-Type':"application/json",
-              'Token-Googlekeep':"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtpcmFuc2FpczAzIiwibmFtZSI6IktpcmFuIFNhaSIsImVtYWlsIjoia2lyYW5zYWlzMDNAZ21haWwuY29tIiwidXNlcklkIjoiNjY2NzI2MTVhZWFmNzgwNDgyZDAzNjE2IiwiaWF0IjoxNzE4MDM2MDI2fQ.SnZ5u3T9PzwowrpyW2AxaqzJ2Nmd2FkTC2dCQRx9NLs"
+              'Token-Googlekeep':`Bearer ${accesstoken}`
             },body:JSON.stringify({
                 "email":"kiransais03@gmail.com",
                 "labelname":labelname
             })});
         let labelsarrdata = await labelsresponse.json();
+        clearinputfunc()
         console.log("Label created successfully",labelsarrdata);
-        await getlabelslist()
+        // await getlabelslist();
+        location.reload();
         
     }
     catch(err) {
-       console.log("Failed to create new label")
+       console.log("Failed to create new label",err)
     }
     
-
 }
 
 
@@ -101,16 +109,18 @@ async function deletelabelfunc (elem) {
     let labelrownum = parseInt(elem.getAttribute('data-labelrownum'));
     let deletinglabelname = document.querySelectorAll('div.labelrow input')[labelrownum].value
     // let deletinglabelname = document.getElementsByClassName('labelrow')[labelrownum+1].children[1].value
-    let labelsresponse =  await fetch("http://localhost:8080/notes/deletelabel",{method:"DELETE","headers":
+    let accesstoken = localStorage.getItem('accesstoken');
+    let labelsresponse =  await fetch("https://google-keep-backend-node-h-c-n.onrender.com/notes/deletelabel",{method:"DELETE","headers":
         {'Content-Type':"application/json",
-          'Token-Googlekeep':"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtpcmFuc2FpczAzIiwibmFtZSI6IktpcmFuIFNhaSIsImVtYWlsIjoia2lyYW5zYWlzMDNAZ21haWwuY29tIiwidXNlcklkIjoiNjY2NzI2MTVhZWFmNzgwNDgyZDAzNjE2IiwiaWF0IjoxNzE4MDM2MDI2fQ.SnZ5u3T9PzwowrpyW2AxaqzJ2Nmd2FkTC2dCQRx9NLs"
+          'Token-Googlekeep':`Bearer ${accesstoken}`
         },body:JSON.stringify({
             "email":"kiransais03@gmail.com",
             "labelname":deletinglabelname
         })});
     let labelsarrdata = await labelsresponse.json();
     console.log("Label deleted successfully",labelsarrdata)
-    await getlabelslist()
+    // await getlabelslist()
+    location.reload();
 
   } catch (error) {
     console.log("Failed to delete the label",error)
@@ -154,9 +164,10 @@ async function editlabelfuncclick1 (elem) {
     try {
       let labelrownum = parseInt(elem.getAttribute('data-labelrownum'));
          let editedlabelname = document.querySelectorAll('div.labelrow input')[labelrownum].value;
-      let labelsresponse =  await fetch("http://localhost:8080/notes/editlabel",{method:"PATCH","headers":
+         let accesstoken = localStorage.getItem('accesstoken');
+         let labelsresponse =  await fetch("https://google-keep-backend-node-h-c-n.onrender.com/notes/editlabel",{method:"PATCH","headers":
           {'Content-Type':"application/json",
-            'Token-Googlekeep':"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtpcmFuc2FpczAzIiwibmFtZSI6IktpcmFuIFNhaSIsImVtYWlsIjoia2lyYW5zYWlzMDNAZ21haWwuY29tIiwidXNlcklkIjoiNjY2NzI2MTVhZWFmNzgwNDgyZDAzNjE2IiwiaWF0IjoxNzE4MDM2MDI2fQ.SnZ5u3T9PzwowrpyW2AxaqzJ2Nmd2FkTC2dCQRx9NLs"
+            'Token-Googlekeep':`Bearer ${accesstoken}`
           },body:JSON.stringify({
               "email":"kiransais03@gmail.com",
               "oldlabel":oldlabelname,
@@ -168,7 +179,8 @@ async function editlabelfuncclick1 (elem) {
       elem.innerHTML = `<img src="../../svg/editicon.svg" alt="edit">`
 
       console.log("Label edited successfully",labelsarrdata)
-      await getlabelslist();
+      // await getlabelslist();
+      location.reload()
   
     } catch (error) {
       console.log("Failed to edit the label",error)

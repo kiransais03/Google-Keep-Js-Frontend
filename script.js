@@ -37,3 +37,14 @@ async function loadscriptfilesonebyone () {
    }
    
 loadscriptfilesonebyone()
+
+
+function redirectfunc(event) {   //Redirect function
+    let a=document.createElement('a');
+    a.href="/pages/noteshomepage/noteshomepage.html"
+    a.click();
+}
+
+if(localStorage.getItem('accesstoken')) {    //If already signed in redirect function
+    redirectfunc();
+}

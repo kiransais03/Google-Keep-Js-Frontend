@@ -38,19 +38,36 @@ function removebghighlighter(e) {
   }
 
   function navmenutoggle () {
-     document.getElementById("navmenu").classList.add('togglemenu');
+     document.getElementById("navmenu").classList.toggle('togglemenu');
   }
 
   function reloadpage () {
    location.reload();
   }
 
+  let usericon = document.getElementsByClassName('useraccount')[0];
+  usericon.title = `User Account Email/Username: ${localStorage.getItem('email')}`
+
+  let logoutbtn = document.getElementsByClassName('logoutbtn')[0];
+  logoutbtn.addEventListener('click',()=>{
+   localStorage.removeItem('accesstoken');
+   localStorage.removeItem('email');
+   window.location.pathname = '/index.html'
+});
+
+  if(!localStorage.getItem('accesstoken'))
+   {
+      window.location.pathname = '/index.html'
+   }
   //Search functionality
 
   let notedivcollectionarr = '';
   let pagename = ''
 
   function searchfunc (elem) {
+   //hiding createnotediv when searching
+   document.getElementsByClassName('createnotesheading')[0].style.display='none';
+   document.getElementsByClassName('createnotesdiv')[0].style.display='none';
      if(notedivcollectionarr=='') {
       notedivcollectionarr = Array.from(document.getElementsByClassName('noteui'));
       pagename = document.querySelector('.notescontainer h3').innerText;
@@ -79,8 +96,9 @@ function removebghighlighter(e) {
          let notetitle = notedivcollectionarr[i].querySelector('.note-input').value;
          let notetext = notedivcollectionarr[i].querySelector('textarea').value;
          console.log("title",notetitle,notetext)
-         if(notetitle.toLowerCase().search(searchtext.toLowerCase())!==-1 || notetext.toLowerCase().search(searchtext.toLowerCase())!==-1) {
-            notescontainerdiv.append(notedivcollectionarr[i]) 
+         if((searchtext.length>=1 && (notetitle.toLowerCase().search(searchtext.toLowerCase())!==-1)) ||(searchtext.length>=1 && (notetext.toLowerCase().search(searchtext.toLowerCase())!==-1))) {
+            notescontainerdiv.append(notedivcollectionarr[i]);
+            console.log("search length",searchtext.length,searchtext)
          }
       }
   }
@@ -92,9 +110,10 @@ async function addlabelnamesTonav () {
    let textuldiv = document.querySelector('.text ul');
    let iconlicollection = document.getElementsByClassName('iconli');
    let textlicollection = document.getElementsByClassName('textli');
-   let notesresponse =  await fetch("http://localhost:8080/notes/getnotes",{method:"GET","headers":
+   let accesstoken = localStorage.getItem('accesstoken');
+   let notesresponse =  await fetch("https://google-keep-backend-node-h-c-n.onrender.com/notes/getnotes",{method:"GET","headers":
       {'Content-Type':"application/json",
-        'Token-Googlekeep':"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtpcmFuc2FpczAzIiwibmFtZSI6IktpcmFuIFNhaSIsImVtYWlsIjoia2lyYW5zYWlzMDNAZ21haWwuY29tIiwidXNlcklkIjoiNjY2NzI2MTVhZWFmNzgwNDgyZDAzNjE2IiwiaWF0IjoxNzE4MDM2MDI2fQ.SnZ5u3T9PzwowrpyW2AxaqzJ2Nmd2FkTC2dCQRx9NLs"
+        'Token-Googlekeep':`Bearer ${accesstoken}`
       }});
   let notesdata = await notesresponse.json();
   let labelslistarr1 = notesdata.notesarr[0].labelslist

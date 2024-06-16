@@ -35,4 +35,68 @@ async function loadscriptfilesonebyone () {
    await shownavbarcomponent();
    }
    
-loadscriptfilesonebyone()
+loadscriptfilesonebyone();
+
+let loginbtn = document.getElementById('submit-btn');
+let commentsdiv= document.getElementsByClassName('comments')[0];
+let currentuserobj;
+
+//Login button clicked
+loginbtn.addEventListener('click',loginfunction);
+
+
+async function loginfunction(event) {
+    try {
+     event.preventDefault();
+     let email=document.getElementsByName('email')[0].value;
+     let password=document.getElementsByName('password')[0].value;
+     let loginresponse =  await fetch("https://google-keep-backend-node-h-c-n.onrender.com/user/loginuser",{method:"POST","headers":
+        {'Content-Type':"application/json",},
+        body:JSON.stringify({
+            "loginId" : email,
+             "password" : password
+        })});
+    let logindata = await loginresponse.json();
+    if(logindata.status==200) {
+        localStorage.setItem("accesstoken",logindata.data.token)
+        localStorage.setItem("email",email);
+        console.log("User Logged In",logindata);
+        showmessage(logindata.message)
+         setTimeout(redirectfunc,1000);
+    }
+    else {
+        console.error(logindata.message);
+        showmessage(logindata.message)
+    }
+    }
+    catch(err) {
+        console.log("Error during login",err);
+        showmessage("Error during login")
+    }
+} 
+
+
+function showmessage(msg) {  //Show Messages Function
+ let div2=document.createElement('div');
+ div2.innerText=msg;
+ div2.classList.add('green');
+ div2.style.marginBottom='10px';
+ if(!document.getElementsByClassName('green')[0])
+  {
+    commentsdiv.append(div2);
+    setTimeout(() => {
+    if(document.getElementsByClassName('green')[0]) 
+    document.getElementsByClassName('green')[0].remove();},5000);
+  }
+
+ }
+
+ function redirectfunc(event) {   //Redirect function
+    let a=document.createElement('a');
+    a.href="/pages/noteshomepage/noteshomepage.html"
+    a.click();
+}
+
+if(localStorage.getItem('accesstoken')) {    //If already signed in redirect function
+    redirectfunc();
+}

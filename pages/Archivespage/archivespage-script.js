@@ -50,9 +50,11 @@ async function showArchivesNotesdivDisplaycomponent() {
 
 //after all script files are completely executed,"getnotesanddisplay()" function is available.Now we can call it with "usernotesarr" argument
 async function fetchandshowarchivesnotes () {
-    let notesresponse =  await fetch("http://localhost:8080/notes/getnotes",{method:"GET","headers":
+    try {
+    let accesstoken = localStorage.getItem('accesstoken')
+    let notesresponse =  await fetch("https://google-keep-backend-node-h-c-n.onrender.com/notes/getnotes",{method:"GET","headers":
         {'Content-Type':"application/json",
-          'Token-Googlekeep':"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtpcmFuc2FpczAzIiwibmFtZSI6IktpcmFuIFNhaSIsImVtYWlsIjoia2lyYW5zYWlzMDNAZ21haWwuY29tIiwidXNlcklkIjoiNjY2NzI2MTVhZWFmNzgwNDgyZDAzNjE2IiwiaWF0IjoxNzE4MDM2MDI2fQ.SnZ5u3T9PzwowrpyW2AxaqzJ2Nmd2FkTC2dCQRx9NLs"
+          'Token-Googlekeep':`Bearer ${accesstoken}`
         }});
     let notesdata = await notesresponse.json();
     let filteredusernotesarr = notesdata.notesarr[0].usernotes.filter((currObj,index)=>{
@@ -65,6 +67,10 @@ async function fetchandshowarchivesnotes () {
     let labelslistarr1 = notesdata.notesarr[0].labelslist
     await getnotesanddisplay(notesdiv,filteredusernotesarr,labelslistarr1);
     console.log("hilton")
+}
+catch(err) {
+    console.log("Error while getting notes arr",err)
+}
 }
 
 
