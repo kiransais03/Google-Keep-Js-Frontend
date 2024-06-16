@@ -39,7 +39,7 @@ async function showArchivesNotesdivDisplaycomponent() {
     let notesdisplay = await fetch("../../components/notedisplay/notedisplay.html");
     let response = await notesdisplay.text();
     archivesnotesdiv.innerHTML = response;
-    await loadScript("../../components/Notedisplay/notedisplay-script.js");
+    await loadScript("../../components/notedisplay/notedisplay-script.js");
    }
     catch (err) {
         console.log("Failed to fetch notedisplay component",err)
