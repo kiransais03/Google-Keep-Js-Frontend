@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="./navbar-styles.css">
+    <link rel="stylesheet" href="../../additional css/roundbutton-styles.css"> -->
+</head>
+<body>
+  <div>
+  <nav>
+    <div class="navbar">
+        <div class="navleft">
+          <button class='roundbtn' onclick="navmenutoggle()"><img src="../../svg/hamburger.svg" alt="menu"></button>
+          <img width="40px" height="40px" src="../../images/keep.png" alt="keeplogo"/>
+          <h2 style="color:#5f6368;opacity:1;font-weight:400">Keep</h2>
+        </div>
+        <div class="navcentre">
+          <button class="searchiconbtn" onclick="focussearchInputbox()"><img src="../../svg/searchicon.svg" alt="find"></button> 
+          <input class='search-input' onchange="searchfunc(this)" onkeyup="searchfunc(this)" type="search" placeholder="Search" value="">
+        </div>
+        <div class="navright">
+          <button class='roundbtn' title="Refresh Page" onclick="reloadpage()"><img src="../../svg/refreshicon.svg" alt="refresh"></button>
+          <button class='roundbtn useraccount' style="padding: 0;"><img width="30" height="30" src="../../svg/user.svg" alt="logout"></button>
+            <button class='roundbtn logoutbtn' title="Logout" style="padding: 0;"><img width="30" height="30" src="../../images/logoutman.png" alt="logout"></button>
+        </div>
+    </div>
+    </nav>
+    <aside>
+      <div id="navmenu" class="nav">
+          <div class="icon">
+            <ul>
+              <li><a class="notes iconli" id="0" onclick="navmenulinkclicked(this)" href="#"  data-href="../../pages/noteshomepage/noteshomepage.html"><img src="../../svg/notesicon.svg" alt="notes"></a></li>
+              <li><a class="editlabels iconli" id="1" onclick="navmenulinkclicked(this)" href="#"  data-href="../../pages/Editlabelspage/editlabelspage.html"><img src="../../svg/editlabels.svg" alt="notes"></a></li>
+              <li><a class="archives iconli" id="2" onclick="navmenulinkclicked(this)" href="#"  data-href="../../pages/archivespage/archivespage.html"><img src="../../svg/archives.svg" alt="notes"></a></li>
+              <li><a class="trash iconli" id="3" onclick="navmenulinkclicked(this)" href="#"  data-href="../../pages/trashpage/trashpage.html"><img src="../../svg/trash.svg" alt="notes"></a></li>
+            </ul>
+          </div>
+          <div class="text">
+            <ul style="list-style-type: none;">
+              <li><a class="t-notes textli" id="54" onclick="navmenulinkclicked(this)" href="#"  data-href="../../pages/noteshomepage/noteshomepage.html">Notes</a></li>
+              <li><a class="t-editlabels textli" id="55" onclick="navmenulinkclicked(this)" href="#" data-href="../../pages/Editlabelspage/editlabelspage.html" >Edit Lables</a></li>
+              <li><a class="t-archives textli" id="56" onclick="navmenulinkclicked(this)" href="#" data-href="../../pages/archivespage/archivespage.html" >Archive</a></li>
+              <li><a class="t-trash textli" id="57" onclick="navmenulinkclicked(this)" href="#" data-href="../../pages/trashpage/trashpage.html" >Trash</a></li>
+            </ul>
+          </div>
+        </div>
+    </aside>
+  </div>
+    <script src="./navbar-script.js"></script>
+</body>
+</html>
