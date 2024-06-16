@@ -3,5 +3,56 @@
 body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
+    background: rgb(170,255,204);
+    background: radial-gradient(circle, rgba(170,255,204,1) 7%, rgba(252,240,70,0.8217169943820225) 100%);
 }
 
+
+
+/* //homepage main */
+
+.home {
+    color:#5f6368;
+    font-family: "Bellota", system-ui;
+    font-weight: 600;
+    font-style: normal;
+}
+ 
+ .page-text h1 {
+  font-size: 80px;
+  line-height: 95px;
+  font-weight: 400;
+ }
+
+ .page-text p {
+    font-family: "Dancing Script", cursive;
+  font-size: 25px;
+  font-weight: 400;
+  font-style: normal;
+ }
+ 
+ .page-text {
+     margin: 30px;
+ }
+ 
+ .page-text button {
+     width: 200px;
+     height: 50px;
+     font-size: 20px;
+ }
+ 
+ .mainlg-btn {
+     background-color: black;
+     color: white;
+     cursor: pointer;
+     margin-right: 20px;
+ }
+ 
+ .mainsgu-btn {
+     background-color: white;
+     cursor: pointer;
+ }
+ 
+ .clicked {
+     border: 4px solid blue;
+ }

@@ -1,4 +1,3 @@
-
 let navbarhomepagediv = document.getElementsByClassName('navbarhomepagediv')[0];
 
 

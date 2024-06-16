@@ -127,7 +127,7 @@
   transform: perspective(1000px) rotateY(90deg);
 }
 
-.noteshover,.trashhover,.editlabelshover,.archiveshover,.tnoteshover,.ttrashhover,.teditlabelshover,.tarchiveshover {
+.noteshover,.trashhover,.editlabelshover,.archiveshover,.t-noteshover,.t-trashhover,.t-editlabelshover,.t-archiveshover {
   background-color:#eff3f6;
 }
 
