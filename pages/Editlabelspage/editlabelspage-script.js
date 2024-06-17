@@ -38,6 +38,8 @@ async function shownavbarcomponent () {
 async function getlabelslist () {
   try {
     let accesstoken = localStorage.getItem('accesstoken');
+
+    labelsdisplaydiv.innerHTML = '<div class="loader" style="margin:0 auto"></div>'
     let labelsresponse =  await fetch("https://google-keep-backend-node-h-c-n.onrender.com/notes/getlabelslist",{method:"GET","headers":
         {'Content-Type':"application/json",
           'Token-Googlekeep':`Bearer ${accesstoken}`
@@ -58,6 +60,8 @@ async function getlabelslist () {
     })
   }
   catch(err) {
+    labelsdisplaydiv.innerHTML = 'Error Occurred.Please Refresh Page'
+    labelsdisplaydiv.style.color='red'
     console.log("Error while getting labellist",err)
   }
 }  

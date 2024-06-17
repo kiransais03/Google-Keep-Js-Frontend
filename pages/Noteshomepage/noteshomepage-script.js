@@ -80,21 +80,35 @@ async function showaddnewnotesform() {
    
 }
 
-
+let erroroccurred = false
 
 //API call to get notes data
 async function getnotearrfromdb () {
     try {
     let accesstoken = localStorage.getItem('accesstoken');
+    Array.from(document.getElementsByClassName('notesdiv')).map((elem)=>{
+
+        elem.innerHTML = '<div class="loader" style="margin:0 auto"></div>'
+    })
     let notesresponse =  await fetch("https://google-keep-backend-node-h-c-n.onrender.com/notes/getnotes",{method:"GET","headers":
         {'Content-Type':"application/json",
           'Token-Googlekeep':`Bearer ${accesstoken}`
         }});
     let notesdata = await notesresponse.json();
+    Array.from(document.getElementsByClassName('notesdiv')).map((elem)=>{
+
+        elem.innerHTML = ''
+    })
     return notesdata;
     }
     catch(err) {
-        console.log("Failed to get notes arr from db",err)
+        Array.from(document.getElementsByClassName('notesdiv')).map((elem)=>{
+
+            elem.innerHTML = 'Error Occurred.Please Refresh Page'
+            elem.style.color='red'
+        })
+        erroroccurred=true
+        console.error("Failed to get notes arr from db",err)
     }
 }
 
@@ -159,7 +173,9 @@ async function loadscriptfilesonebyone () {
    await fetchandshowpinnednotes(notesdata);
    await fetchandshowothernotesdiv(notesdata);
     removeUnwantedelements();
-    addinfotags();
+    if(!erroroccurred) {
+        addinfotags();
+        }
  }
    
 loadscriptfilesonebyone()

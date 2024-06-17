@@ -50,6 +50,8 @@ async function loginfunction(event) {
      event.preventDefault();
      let email=document.getElementsByName('email')[0].value;
      let password=document.getElementsByName('password')[0].value;
+     console.log("em",email,password)
+     loginbtn.innerHTML='<div class="loader" style="margin:0 auto"></div>'
      let loginresponse =  await fetch("https://google-keep-backend-node-h-c-n.onrender.com/user/loginuser",{method:"POST","headers":
         {'Content-Type':"application/json",},
         body:JSON.stringify({
@@ -57,6 +59,7 @@ async function loginfunction(event) {
              "password" : password
         })});
     let logindata = await loginresponse.json();
+    console.log("cakk")
     if(logindata.status==200) {
         localStorage.setItem("accesstoken",logindata.data.token)
         localStorage.setItem("email",email);
@@ -65,11 +68,13 @@ async function loginfunction(event) {
          setTimeout(redirectfunc,1000);
     }
     else {
+        loginbtn.innerHTML='Login'
         console.error(logindata.message);
         showmessage(logindata.message)
     }
     }
     catch(err) {
+        loginbtn.innerHTML='Login'
         console.log("Error during login",err);
         showmessage("Error during login")
     }
