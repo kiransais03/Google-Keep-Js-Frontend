@@ -111,6 +111,18 @@ function selectlabelclick (elem) {
   // let currnotediv = elem.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
   let currnotediv = elem.closest('.notecontainer')
   let labelbtnsdiv = currnotediv.querySelector('.labelbtnsdiv');
+  let btnsarr = Array.from(currnotediv.querySelectorAll('.labelbtnsdiv button'));
+  let scrollPosition = window.scrollY;
+  for(let i=0;i<btnsarr.length;i++)
+    {
+      if(btnsarr[i].innerHTML === elem.innerText+" x")
+        {
+          requestAnimationFrame(() => {
+            window.scrollTo(0, scrollPosition);
+        });
+          return ;
+        }
+    }
   let button = document.createElement('button');
       button.className = 'roundbtn';
       button.style.backgroundColor = 'white';
@@ -118,7 +130,7 @@ function selectlabelclick (elem) {
       button.style.border = '1px solid black';
       button.style.padding = '3px';
       button.onclick = function() { removethisbutton(this); };
-      let scrollPosition = window.scrollY;
+      
       console.log(scrollPosition,"pos")
       button.innerHTML = elem.innerText+" x";
       labelbtnsdiv.append(button);
