@@ -49,6 +49,17 @@
     background-color: #eff3f6;
 }
 
+
+.userdescription {
+  
+  position: absolute;
+  background-color: skyblue;
+  top: 38px;
+  left: -116px;
+  border-radius: 5px;
+  
+}
+
 /* Input Field */
 
 .search-input {
