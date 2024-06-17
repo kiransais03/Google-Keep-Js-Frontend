@@ -57,6 +57,12 @@ async function fetchandshowtrashnotes () {
 
             elem.innerHTML = '<div class="loader" style="margin:0 auto"></div>'
         })
+    let deleteexpiredtrashnotes = await fetch("https://google-keep-backend-node-h-c-n.onrender.com/notes/deletenotesafterexpiry",{method:"DELETE","headers":
+        {'Content-Type':"application/json",
+          'Token-Googlekeep':`Bearer ${accesstoken}`
+        }});
+    console.log("Expired trash notes deleted",deleteexpiredtrashnotes);
+    
     let notesresponse =  await fetch("https://google-keep-backend-node-h-c-n.onrender.com/notes/getnotes",{method:"GET","headers":
         {'Content-Type':"application/json",
           'Token-Googlekeep':`Bearer ${accesstoken}`
