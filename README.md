@@ -2,7 +2,7 @@
 
 ##### Technologies Used : MongoDb,Express,HTML,CSS,JS,Node.js
 
-#### Dev Tools : VS Code,Github,Vercel,Render
+#### Dev Tools : VS Code,Github,Vercel,Render.com
 
 #### Note : In this github repo of frontend.In folders namely pages,components duplicate folders with capital letter in name starting will appear,it is caused to due to 'git'.Git is not tracking the folder names changing from capital letters to small letters.I will try to rectify it.
 
@@ -31,7 +31,7 @@
 
 --In Frontend all the html,js,css files are made reusable which will be easy to maintain,modify and scaling the website.
 
-### Deployed Links : Using Vercel Hosting
+### Deployed Links :
 
 #### --Backend : https://google-keep-backend-node-h-c-n.onrender.com/
 
