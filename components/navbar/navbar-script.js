@@ -46,7 +46,18 @@ function removebghighlighter(e) {
   }
 
   let usericon = document.getElementsByClassName('useraccount')[0];
-  usericon.title = `User Account Email/Username: ${localStorage.getItem('email')}`
+  usericon.title = `User Account Email/Username: ${localStorage.getItem('email')}`;
+  let userdescdiv = document.getElementsByClassName('userdescription')[0]
+  usericon.addEventListener('click',()=>{
+       if(userdescdiv.style.display=='none')
+         {
+            userdescdiv.style.display='block'
+         }
+         else {
+            userdescdiv.style.display='none'
+         }
+  })
+  userdescdiv.innerHTML=`User Account Email/Username: ${localStorage.getItem('email')}`
 
   let logoutbtn = document.getElementsByClassName('logoutbtn')[0];
   logoutbtn.addEventListener('click',()=>{
