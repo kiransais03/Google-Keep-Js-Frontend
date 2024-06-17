@@ -51,12 +51,20 @@ async function showArchivesNotesdivDisplaycomponent() {
 //after all script files are completely executed,"getnotesanddisplay()" function is available.Now we can call it with "usernotesarr" argument
 async function fetchandshowarchivesnotes () {
     try {
-    let accesstoken = localStorage.getItem('accesstoken')
+    let accesstoken = localStorage.getItem('accesstoken');
+    Array.from(document.getElementsByClassName('notesdiv')).map((elem)=>{
+
+        elem.innerHTML = '<div class="loader" style="margin:0 auto"></div>'
+    })
     let notesresponse =  await fetch("https://google-keep-backend-node-h-c-n.onrender.com/notes/getnotes",{method:"GET","headers":
         {'Content-Type':"application/json",
           'Token-Googlekeep':`Bearer ${accesstoken}`
         }});
     let notesdata = await notesresponse.json();
+    Array.from(document.getElementsByClassName('notesdiv')).map((elem)=>{
+
+        elem.innerHTML = ''
+    })
     let filteredusernotesarr = notesdata.notesarr[0].usernotes.filter((currObj,index)=>{
         if(currObj.archived && !currObj.trashed)
             {
@@ -69,17 +77,26 @@ async function fetchandshowarchivesnotes () {
     console.log("hilton")
 }
 catch(err) {
-    console.log("Error while getting notes arr",err)
+    Array.from(document.getElementsByClassName('notesdiv')).map((elem)=>{
+
+        elem.innerHTML = 'Error Occurred.Please Refresh Page'
+        elem.style.color='red'
+    })
+    erroroccurred=true
+    console.error("Error while getting notes arr",err)
 }
 }
 
+let erroroccurred = false
 
 async function loadscriptfilesonebyone () {
    await shownavbarcomponent();
    await showArchivesNotesdivDisplaycomponent();
    await fetchandshowarchivesnotes();
+   if(!erroroccurred) {
    addinfotags();
    }
+ }
    
 loadscriptfilesonebyone()
 

@@ -53,11 +53,19 @@ async function fetchandshowlabelnotes () {
     let labelspageheading = document.getElementsByClassName('labelspageheading')[0];
     labelspageheading.innerText = `LABLE - ${localStorage.getItem('currpagename')}`;
     let accesstoken = localStorage.getItem('accesstoken');
+    Array.from(document.getElementsByClassName('notesdiv')).map((elem)=>{
+
+        elem.innerHTML = '<div class="loader" style="margin:0 auto"></div>'
+    })
     let notesresponse =  await fetch("https://google-keep-backend-node-h-c-n.onrender.com/notes/getnotes",{method:"GET","headers":
         {'Content-Type':"application/json",
           'Token-Googlekeep':`Bearer ${accesstoken}`
         }});
     let notesdata = await notesresponse.json();
+    Array.from(document.getElementsByClassName('notesdiv')).map((elem)=>{
+
+        elem.innerHTML = ''
+    })
     let filteredusernotesarr = notesdata.notesarr[0].usernotes.filter((currObj,index)=>{
         if(currObj.labels.includes(localStorage.getItem('currpagename')) && !currObj.trashed)
             {
@@ -70,22 +78,31 @@ async function fetchandshowlabelnotes () {
     console.log("hilton")
 }
 catch(err) {
+    Array.from(document.getElementsByClassName('notesdiv')).map((elem)=>{
+
+        elem.innerHTML = 'Error Occurred.Please Refresh Page'
+        elem.style.color='red'
+    })
+    erroroccurred=true
     console.log("Failed to get notes arr",err);
 }
 }
 
+let erroroccurred = false
 
 async function loadscriptfilesonebyone () {
    await shownavbarcomponent();
    await showLabelNotesdivDisplaycomponent();
    await fetchandshowlabelnotes();
-   addinfotags();
-   }
+   if(!erroroccurred) {
+    addinfotags();
+    }
+}
    
 loadscriptfilesonebyone()
 
 function addinfotags () {
-    let noteuidivarr = document.querySelectorAll('.labelspagediv .noteui');
+    let noteuidivarr = Array.from(document.querySelectorAll('.labelspagediv .noteui'))
     if(noteuidivarr.length==0)
       {
           console.log("Hello no label notes");

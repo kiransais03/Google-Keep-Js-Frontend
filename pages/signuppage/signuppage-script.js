@@ -54,6 +54,7 @@ async function signupfunction(event) {
      let password=document.getElementsByName('password')[0].value;
      let confirmpass=document.getElementsByName('confirmpass')[0].value;
      if(password===confirmpass) {
+        signupbtn.innerHTML='<div class="loader" style="margin:0 auto"></div>'
      let signupresponse =  await fetch("https://google-keep-backend-node-h-c-n.onrender.com/user/register",{method:"POST","headers":
         {'Content-Type':"application/json",},
         body:JSON.stringify({
@@ -69,16 +70,19 @@ async function signupfunction(event) {
      setTimeout(redirectfunc,1000);
     }
     else {
+        signupbtn.innerHTML='Signup'
         console.error(signupdata.message)
         showmessage(signupdata.message)
     }
     }
     else {
-        showmessage("Please recheck password and confirm password")
+        signupbtn.innerHTML='Signup'
+        showmessage("Please recheck Password and Confirm password")
        console.error("Please recheck password and confirm password")
     }
     }
     catch(err) {
+        signupbtn.innerHTML='Signup'
         console.log("Error during Signup",err)
         showmessage("Error during Signup")
     }
