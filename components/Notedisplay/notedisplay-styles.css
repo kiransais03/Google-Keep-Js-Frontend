@@ -25,7 +25,8 @@
     flex-direction: column;
     justify-content: flex-start;
     margin: 0 auto;
-    width: fit-content;
+    /* width: fit-content; */
+    width: min-content;
     min-width: 35vw;
     border: 3px solid #eff3f6;
     border-radius: 0.5rem;

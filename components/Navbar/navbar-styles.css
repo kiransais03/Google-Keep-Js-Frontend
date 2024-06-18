@@ -51,13 +51,12 @@
 
 
 .userdescription {
-  
   position: absolute;
   background-color: skyblue;
   top: 38px;
   left: -116px;
   border-radius: 5px;
-  
+  padding: 5px;
 }
 
 /* Input Field */
