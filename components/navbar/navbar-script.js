@@ -70,6 +70,12 @@ function removebghighlighter(e) {
    {
       window.location.pathname = '/index.html'
    }
+
+
+function focussearchInputbox() {
+   document.getElementsByClassName('search-input')[0].focus();
+}
+
   //Search functionality
 
   let notedivcollectionarr = '';
@@ -77,13 +83,13 @@ function removebghighlighter(e) {
 
   function searchfunc (elem) {
    //hiding createnotediv when searching
-   document.getElementsByClassName('createnotesheading')[0].style.display='none';
-   document.getElementsByClassName('createnotesdiv')[0].style.display='none';
-     if(notedivcollectionarr=='') {
+   if(notedivcollectionarr=='') {
       notedivcollectionarr = Array.from(document.getElementsByClassName('noteui'));
       pagename = document.querySelector('.notescontainer h3').innerText;
       if(pagename==="Pinned Notes")
          {
+            document.getElementsByClassName('createnotesheading')[0].style.display='none';
+            document.getElementsByClassName('createnotesdiv')[0].style.display='none'; 
             pagename="Notes"
          }
       searchandfilternotes(elem,notedivcollectionarr);
@@ -100,19 +106,20 @@ function removebghighlighter(e) {
    let notescontainerdiv = document.getElementsByClassName('notescontainer')[0];
    let noteuidivs = Array.from(document.getElementsByClassName('noteui'))
    console.log(notedivcollectionarr,"uiu")
-   notescontainerdiv.innerHTML = `<h2 style="text-align:center">${pagename} Search</h2>`;
-   notescontainerdiv.style="row-gap:10px;display:flex;flex-direction:column"
+   notescontainerdiv.innerHTML = `<h2 style="text-align:center;margin:12px 3px 0 0">${pagename} Search</h2><span style="color:teal;font-style:italic;font-family:Times New Roman">Click On Reload To Exit Search Mode</span>`;
+   notescontainerdiv.style="row-gap:10px;display:flex;flex-direction:column;align-items:center"
    for(let i=0;i<notedivcollectionarr.length;i++)
       {
          let notetitle = notedivcollectionarr[i].querySelector('.note-input').value;
          let notetext = notedivcollectionarr[i].querySelector('textarea').value;
          console.log("title",notetitle,notetext)
-         if((searchtext.length>=1 && (notetitle.toLowerCase().search(searchtext.toLowerCase())!==-1)) ||(searchtext.length>=1 && (notetext.toLowerCase().search(searchtext.toLowerCase())!==-1))) {
+         if((searchtext.length>=0 && (notetitle.toLowerCase().search(searchtext.toLowerCase())!==-1)) ||(searchtext.length>=0 && (notetext.toLowerCase().search(searchtext.toLowerCase())!==-1))) {
             notescontainerdiv.append(notedivcollectionarr[i]);
             console.log("search length",searchtext.length,searchtext)
          }
       }
   }
+
 
 
 async function addlabelnamesTonav () {
