@@ -7,6 +7,12 @@ function onchangedata () {
 }
 
 // ${true?'display:flex':'display:none'}
+
+
+//This variable is used to determine if the color picker is focused or not.
+//To hide or show buttons row of note comp.
+
+let colorpickerfocused = false;
       
       
 async function getnotesanddisplay (notesdiv,usernotesarr,listlabels) {
@@ -36,7 +42,7 @@ async function getnotesanddisplay (notesdiv,usernotesarr,listlabels) {
        <div class='notebtnrow' style="display:none">
          <div style="display:flex;align-items:center">
          ${notearrobj.trashed?``:`<img width="20px" class="colorimage" style="background-color:${notearrobj.notebgcolour}" src="../../svg/backgroundcoloricon.svg" alt='bgcoloricon'/> ᐅᐅ`}
-         ${notearrobj.trashed?``:`<input type="color" style="background-color:${notearrobj.notebgcolour};cursor: pointer;border-radius:5px"  value=${notearrobj.notebgcolour} onchange="notebgcolorchange(this)">`}
+         ${notearrobj.trashed?``:`<input type="color" style="background-color:${notearrobj.notebgcolour};cursor: pointer;border-radius:5px" onfocus="colorpickerfocusedfunc()" onblur="colorpickerblurfunc()"  value=${notearrobj.notebgcolour} onchange="notebgcolorchange(this)">`}
          ${notearrobj.trashed?``:notearrobj.archived?`<button class='roundbtn archivebtn' style="background-color:${notearrobj.notebgcolour}" data-objid=${notearrobj.id} data-isarchived='${notearrobj.archived}' onclick="onclickarchive(this)"><img width="20px" src="../../svg/unarchive.svg" alt="unarchive"></button>`:`<button class='roundbtn archivebtn' style="background-color:${notearrobj.notebgcolour}" data-objid=${notearrobj.id} data-isarchived='${notearrobj.archived}' onclick="onclickarchive(this)"><img width="20px" src="../../svg/archivedark.svg" alt="archivedark"></button>`}
          
          ${notearrobj.trashed?`<button class='roundbtn trashbtn' style="background-color:${notearrobj.notebgcolour}" data-objid=${notearrobj.id} data-istrashed='${notearrobj.trashed}' onclick="onclicktrashed(this)"><img width="20px" src="../../svg/trashrestore.svg" alt="trashrestore"></button>`:`<button class='roundbtn trashbtn' style="background-color:${notearrobj.notebgcolour}" data-objid=${notearrobj.id} data-istrashed='${notearrobj.trashed}' onclick="onclicktrashed(this)"><img width="20px" src="../../svg/deleteicon.svg" alt="deleteicon"></button>`}
@@ -346,6 +352,13 @@ async function onclickaddnewnotes(elem) {
   }
 }
 
+function colorpickerfocusedfunc () {
+  colorpickerfocused = true;
+}
+
+function colorpickerblurfunc () {
+  colorpickerfocused = false;
+}
 
 function shownotebtnrow (e) {
   let elem = e.target;
@@ -354,7 +367,9 @@ function shownotebtnrow (e) {
 }
 
 function hidenotebtnrow (e) {
-  let elem = e.target;
-  let notebtnrow = elem.querySelector('.notebtnrow');
-  notebtnrow.style.display="none";
+  if(colorpickerfocused==false) {
+    let elem = e.target;
+    let notebtnrow = elem.querySelector('.notebtnrow');
+    notebtnrow.style.display="none";
+  }
 }
