@@ -4,7 +4,7 @@
 
 #### Dev Tools : VS Code,Github,Vercel,Render.com
 
-#### Note : In this github repo of frontend.In folders namely pages,components duplicate folders with capital letter in name starting will appear,it is caused to due to 'git'.Git is not tracking the folder names changing from capital letters to small letters.I will try to rectify it.
+#### Note : In this github repo of frontend.In folder->(components), duplicate folders with capital letter in name starting will appear(Ex.'Navbar' and 'navbar' both are same),it is caused to due to 'git'.Git is not tracking the folder names changing from capital letters to small letters.I will try to rectify it.
 
 #### Note : While Signup or LoginIn for first time website will take 1 to 1.5 minute to load and communicate with backend.Because the backend server is hosted on Render.com free platform.
 
