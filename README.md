@@ -8,7 +8,7 @@
 
 #### Note : While Signup or LoginIn for first time website will take 1 to 1.5 minute to load and communicate with backend.Because the backend server is hosted on Render.com free platform.
 
-### Steps Required To Run Applications :
+### Steps Required To Run Application Locally :
 
 #### Backend :Repo Link https://github.com/kiransais03/google-keep-backend-node-h-c-n
 
